@@ -22,32 +22,51 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
 
 
 @Composable
 fun MainView() {
     val randomStart = 2
-    val randomEnd = 40
+    val randomEnd = 20
 
     var random1 by remember { mutableStateOf((randomStart..randomEnd).random()) }
     var random2 by remember { mutableStateOf((randomStart..randomEnd).random()) }
+
+    var addSub by remember {
+        mutableStateOf(Random.nextBoolean())
+    }
     var text by remember { mutableStateOf("") }
     var checkResult by remember { mutableStateOf("") }
     var question by remember { mutableStateOf(0) }
     var points by remember { mutableStateOf(0) }
-    val sumRandom = random1 + random2
+    var printAddSub: String = ""
+    var sumRandom = 0
 
+    if (addSub){
+        printAddSub = "+"
+    }
+    else{
+        printAddSub = "-"}
 
     fun verifyAnswer() {
+        if (addSub){
+            sumRandom = random1 + random2
+            printAddSub = "+"
+        }
+        else{
+            sumRandom = random1 - random2
+            printAddSub = "-"}
+
         val answer = text.toIntOrNull()
 
         if (answer != null) {
             if (sumRandom == answer) {
-                checkResult = "Zgadza się, $random1 + $random2 = $sumRandom"
+                checkResult = "Zgadza się, $random1 $printAddSub $random2 = $sumRandom"
                 points++
                 question++
             } else {
-                checkResult = "Złe rozwiązanie, $random1 + $random2 = $sumRandom"
+                checkResult = "Złe rozwiązanie, $random1 $printAddSub $random2 = $sumRandom"
                 question++
             }
 
@@ -58,13 +77,14 @@ fun MainView() {
         text = ""
         random1 = (randomStart..randomEnd).random()
         random2 = (randomStart..randomEnd).random()
+        addSub = Random.nextBoolean()
     }
 
 
     Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(modifier = Modifier.padding(16.dp), text = "Rozwiąż zadanie")
-        Text(modifier = Modifier.padding(16.dp), text = "$random1 + $random2")
+        Text(modifier = Modifier.padding(16.dp), text = "$random1 $printAddSub $random2")
 
         OutlinedTextField(
             value = text,
