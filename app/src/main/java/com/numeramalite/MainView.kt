@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.numeramalite
 
 import androidx.compose.foundation.layout.Column
@@ -25,16 +26,44 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun MainView() {
-    var random1 by remember { mutableStateOf((0..10).random()) }
-    var random2 by remember { mutableStateOf((0..10).random()) }
+    val randomStart = 2
+    val randomEnd = 40
+
+    var random1 by remember { mutableStateOf((randomStart..randomEnd).random()) }
+    var random2 by remember { mutableStateOf((randomStart..randomEnd).random()) }
     var text by remember { mutableStateOf("") }
     var checkResult by remember { mutableStateOf("") }
     var question by remember { mutableStateOf(0) }
     var points by remember { mutableStateOf(0) }
     val sumRandom = random1 + random2
+
+
+    fun verifyAnswer() {
+        val answer = text.toIntOrNull()
+
+        if (answer != null) {
+            if (sumRandom == answer) {
+                checkResult = "Zgadza się, $random1 + $random2 = $sumRandom"
+                points++
+                question++
+            } else {
+                checkResult = "Złe rozwiązanie, $random1 + $random2 = $sumRandom"
+                question++
+            }
+
+        } else {
+            checkResult = "Niepoprawny format liczby"
+            question++
+        }
+        text = ""
+        random1 = (randomStart..randomEnd).random()
+        random2 = (randomStart..randomEnd).random()
+    }
+
+
     Column(Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(16.dp))
-        Text(modifier = Modifier.padding(16.dp), text = "Rozwiąrz zadanie")
+        Text(modifier = Modifier.padding(16.dp), text = "Rozwiąż zadanie")
         Text(modifier = Modifier.padding(16.dp), text = "$random1 + $random2")
 
         OutlinedTextField(
@@ -44,49 +73,14 @@ fun MainView() {
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
-            ), keyboardActions = KeyboardActions(onDone = { val answer = text.toIntOrNull()
-
-                if (answer != null) {
-
-                    if (sumRandom == answer) {
-                        checkResult = "Zgadza się, $random1 + $random2 = $sumRandom"
-                        points++
-                        question++
-                    } else {
-                        checkResult = "Złe rozwiązanie, $random1 + $random2 = $sumRandom"
-                        question++
-                    }
-                    random1 = (0..10).random()
-                    random2 = (0..10).random()
-                } else {
-                    checkResult = "Niepoprawny format liczby"
-                    question++
-                }
-                text = ""})
+            ), keyboardActions = KeyboardActions(onDone = {
+                verifyAnswer()
+            })
         )
 
         Button(modifier = Modifier.padding(16.dp), onClick = {
-            val answer = text.toIntOrNull()
-
-            if (answer != null) {
-                if (sumRandom == answer) {
-                    checkResult = "Zgadza się, $random1 + $random2 = $sumRandom"
-                    points++
-                    question++
-                } else {
-                    checkResult = "Złe rozwiązanie, $random1 + $random2 = $sumRandom"
-                    question++
-                }
-                random1 = (0..10).random()
-                random2 = (0..10).random()
-            } else {
-                checkResult = "Niepoprawny format liczby"
-                question++
-            }
-            text = ""
+            verifyAnswer()
         }
-
-            // End Button
 
         ) {
             Text(text = "Sprwadź")
@@ -96,18 +90,6 @@ fun MainView() {
         Text(text = checkResult)
 
     }
+
+
 }
-
-
-//fun CountThat(nr1: Int, nr2: Int, answer: Int, pts: Int, ques: Int): Int{
-//    val sumRandom = nr1 + nr2
-//    if (sumRandom == answer) {
-//            return nr1; nr2; sumRandom; pts
-//            pts++
-//            ques++
-//        } else {
-//            checkResult = "Złe rozwiązanie, $nr1 + $nr2 = $sumRandom"
-//            question++
-//        }
-//    return nr1+nr2
-//}
