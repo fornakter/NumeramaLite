@@ -1,4 +1,4 @@
-package com.lite
+package com.numerama_lite
 
 import org.junit.Test
 

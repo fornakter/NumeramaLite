@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.lite
+package com.numerama_lite
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -1,4 +1,4 @@
-package com.lite.ui.theme
+package com.numerama_lite.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

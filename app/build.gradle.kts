@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.numeramalite"
+    namespace = "com.numerama_lite"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.numeramalite"
+        applicationId = "com.numerama_lite"
         minSdk = 29
         targetSdk = 33
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

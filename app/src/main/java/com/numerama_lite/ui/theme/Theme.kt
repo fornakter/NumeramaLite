@@ -1,4 +1,4 @@
-package com.lite.ui.theme
+package com.numerama_lite.ui.theme
 
 import android.app.Activity
 import android.os.Build
